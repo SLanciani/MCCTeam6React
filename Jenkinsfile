@@ -30,8 +30,15 @@ node {
 	  if(response=="Yes") {
 	    stage('Release  - react client') {
 	      sh "docker stop mcc-react"
-	      sh "echo MCC react client service is ready to release!"
+	      sh "kubectl create deployment mcc-react --image=mcc-react:v1.0"
+	      sh "kubectl expose deployment mcc-react --type=LoadBalancer --port=80"
 	    }
 	  }
+    }
+
+    stage("Production Deployment View"){
+        sh "kubectl get deployments"
+        sh "kubectl get pods"
+        sh "kubectl get services"
     }
 }
